@@ -119,8 +119,18 @@ function affichData() {
          </tr>
         `;
     }
-    document.getElementById('tbody').innerHTML = table; // Mettre à jour le contenu du tableau
+    document.getElementById('tbody').innerHTML = table; 
+    
 }
+
+function deleteAllTasks() {
+    if (confirm("Êtes-vous sûr de vouloir supprimer toutes les tâches ?")) {
+        dataTache = []; // Réinitialiser le tableau des tâches
+        localStorage.removeItem('Task'); // Supprimer de localStorage
+        affichData(); // Mettre à jour l'affichage
+    }
+}
+
 
 // Fonction pour vider les champs de saisie
 function clearData() {
@@ -162,3 +172,5 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("valid").onclick = addTask; // Ajouter un écouteur pour le bouton d'ajout
     document.getElementById("closeModal").onclick = clearData; // Ajouter un écouteur pour le bouton Annuler
 });
+
+document.getElementById("deleteAll").onclick=deleteAllTasks;
