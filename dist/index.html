@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>To-Do-List</title>
+    <link rel="stylesheet" href="/src/output.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class=" p-0 m-0 w-full h-full"
+    style="background-image: url(/media/bg-todo.webp); background-repeat: no-repeat; background-size: cover;">
+
+    <!-- L'en-tête -->
+    <header>
+        <div class="flex justify-around my-10">
+            <div class="  bg-blue-500  rounded-lg   py-2 text-white font-bold hover:bg-blue-200 ease-in duration-300 " id="add-task">
+                <button id="add-unique" class="text-center w-44">Add Task +</button>
+            </div>
+
+            <div id="search" class="bg-amber-50 rounded-lg py-2 pl-5 w-72">
+                <form action="/search" method="GET">
+                    <input class="placeholder: text-gray-200  bg-none bg-amber-50 " type="text" name="query"
+                        placeholder="Rechercher..." required>
+                    <button type="submit"><i class="fa-solid fa-magnifying-glass "></i></button>
+                </form>
+            </div>
+
+            <div class="bg-blue-500 py-2 text-white font-bold rounded-lg " id="add-multiple">
+                <button class="text-center w-44">Add Multiple +</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Modal d'ajoute unique-->
+    <div id="modal-unique"
+        class="  from-blue-500 to-transparent   justify-center mx-72 rounded-lg text-center  flex-col pb-5 mb-10">
+
+
+        <h2 class="text-xl mb-4 mt-4 text-white font-bold text-center">Ajouter une Tâche</h2>
+        <br>
+        <form id="taskForm" class=" flex justify-center flex-col items-center">
+<!-- titre -->
+            <div class="mb-5 ">
+                <label class=" mb-2 text-white" for="title">Titre :</label> <br>
+                <input type="text" id="title" name="title"    class="border rounded   text-black w-52" required>
+            </div>
+<!-- descreption -->
+            <div class="mb-5">
+                <label class="mb-2 text-white" for="description">Description :</label> <br>
+                <textarea id="description" class=" rounded  text-black resize-none w-52" name="descreption" required></textarea>
+            </div>
+<!-- date d'aherance -->
+            <div class="mb-5">
+                <label class=" mb-2 text-white" for="duration">Date D'aherance:</label> <br>
+                <input type="date" id="duration" class="border rounded   text-black w-52 placeholder:text-center "
+                    placeholder="day / month / year" required>
+            </div>
+<!-- degre d'importance -->
+            <div class="mb-5">
+                <label class="mb-2 text-white" for="importance">Degré d'importance</label> <br>
+
+                <select id="importance" class="border rounded  w-52 text-black text-center" required>
+                    <option value="faible"> p3 </option>
+                    <option value="moyen"> p2 </option>
+                    <option value="eleve"> p1 </option>
+                </select>
+            </div>
+<!-- status -->
+            <div class="mb-5">
+                <label class="mb-2 text-white" for="statut">Status :</label> <br>
+                <select id="statut" class="border rounded  w-52 text-center " required>
+                    <option value="todo"> To Do </option>
+                    <option value="doing"> Doing</option>
+                    <option value="done"> Done</option>
+                </select>
+            </div>
+            <br>
+            <!-- botton -->
+            <div>
+                <button type="button" id="closeModal" aria-label="annuler"
+                    class="px-10 py-2 border-white border-solid border-2 rounded-lg text-white">Annuler</button>
+                <button type="button" id="valid" aria-label="ajouter"
+                    class="px-10 py-2 ml-10  text-white   border-white border-solid border-2 rounded-lg">Ajouter</button>
+            </div>
+        </form>
+
+
+    </div>
+    <!-- les sections d'affichage -->
+
+    <div id="affich-list" class="flex justify-around mt-10">
+
+        <!-- barre todo -->
+       <div id="todo-list" class="bg-amber-50 w-80 h-96 text-black  rounded-lg ">
+            <div>
+                <h3 class="font-bold text-xl pl-10 pt-2 pb-2 bg-amber-100 rounded-lg">To Do</h3>
+            </div>
+        </div>
+
+        <!-- barre doing -->
+        <div id="doing-list" class="bg-red-600 w-80 h-96 text-black">
+            <div>
+                <h3>Doing</h3>
+            </div>
+        </div>
+
+        <!-- barre done -->
+        <div id="done-list" class=" bg-yellow-300 w-80 h-96 text-black">
+            <div>
+                <h3>DONE</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- afficher tous les elements dans un tableau -->
+     <div>
+        <table class="w-auto h-auto bg-red-300">
+           <tr>
+            <th>Titre</th>
+            <th>descreption</th>
+            <th>date d'aherance</th>
+            <th>date de creation</th>
+            <th>importance</th>
+            <th>Status</th>
+           </tr>
+
+         <tbody id="tbody">
+
+         </tbody>
+        </table>
+     </div>
+
+
+    
+</body>
+
+</html>
