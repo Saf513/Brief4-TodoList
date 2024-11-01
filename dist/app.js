@@ -93,80 +93,72 @@
 //     document.getElementById("duration").value = '';
 //     document.getElementById("statut").value = '';
 // });
-
 // Déclarer les variables
 let title = document.getElementById('title');
 let description = document.getElementById('description');
 let duration = document.getElementById('duration');
 let statut = document.getElementById('statut');
-let importance = document.getElementById('importance')
-let dateActuelle = new Date();
+let importance = document.getElementById('importance');
 
-let dataTache;
-if (localStorage.Task != null) {
-    dataTache = JSON.parse(localStorage.Task);
-} else {
-    dataTache = []; // Correction ici, utiliser dataTache au lieu de datapro
-}
+let dataTache = JSON.parse(localStorage.getItem('Task')) || []; // Charger les tâches ou initialiser un tableau vide
 
+// Fonction pour afficher les données
 function affichData() {
     let table = '';
     for (let i = 0; i < dataTache.length; i++) {
         table += `
          <tr>
-    <td> ${dataTache[i].title}</td>
-    <td>${dataTache[i].description}</td>
-    <td>${dataTache[i].duration}</td>
-    <td>${dataTache[i].dateActuelle}</td>
-    <td>${dataTache[i].importance}</td>
-    <td>${dataTache[i].statut}</td>
-    <td><button id="update" onclick=" deleteTask(${i})" >Modifier</button></td>
-    <td><button id="delete">Supprimer</button></td>
-    </tr>
-        `
+            <td>${dataTache[i].title}</td>
+            <td>${dataTache[i].description}</td>
+            <td>${dataTache[i].duration}</td>
+            <td>${new Date(dataTache[i].dateActuelle).toLocaleDateString()}</td>
+            <td>${dataTache[i].importance}</td>
+            <td>${dataTache[i].statut}</td>
+            <td><button class="edit" onclick="editTask(${i})">Modifier</button></td>
+            <td><button class="delete" onclick="deleteTask(${i})">Supprimer</button></td>
+         </tr>
+        `;
     }
+    document.getElementById('tbody').innerHTML = table; // Mettre à jour le contenu du tableau
+}
 
-      // Fonction pour vider les champs de saisie
-      function clearData() {
-        title.value = '';
-        description.value = '';
-        duration.value = '';
-        statut.value = '';
+// Fonction pour vider les champs de saisie
+function clearData() {
+    title.value = '';
+    description.value = '';
+    duration.value = '';
+    statut.value = '';
+    importance.value = 'faible'; // Réinitialiser à la valeur par défaut
+}
 
-    }
-
-    // fonction qui supprimer un seul item
-
-    function deleteTask(){
-        for(let i=0 ; i < dataTache.length ; i++)
-        {
-            dataTache=splice(i,1);
-        }
-        localStorage.Task=dataTache;
-   affichData();
-    }
-    document.getElementById('tbody').innerHTML = table;
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById("valid").onclick = function () {
-        let tache = {
-            title: title.value,
-            description: description.value,
-            duration: duration.value,
-            statut: statut.value,
-            importance: importance.value,
-            dateActuelle: new Date()
-        };
-
-        dataTache.push(tache);
-       
-affichData();
-        // Clear data
-        clearData();
-       
+// Fonction pour ajouter une tâche
+function addTask() {
+    let tache = {
+        title: title.value,
+        description: description.value,
+        duration: duration.value,
+        statut: statut.value,
+        importance: importance.value,
+        dateActuelle: new Date()
     };
 
-   
-});
+    dataTache.push(tache);
+    localStorage.setItem('Task', JSON.stringify(dataTache)); // Sauvegarder dans localStorage
+    affichData(); // Mettre à jour l'affichage
+    clearData(); // Vider les champs de saisie
+}
 
+// Fonction pour supprimer une tâche
+function deleteTask(index) {
+    dataTache.splice(index, 1); // Supprimer la tâche à l'index donné
+    localStorage.setItem('Task', JSON.stringify(dataTache)); // Mettre à jour localStorage
+    affichData(); // Mettre à jour l'affichage
+}
+
+// Initialisation de l'affichage des tâches
+document.addEventListener('DOMContentLoaded', () => {
+    affichData(); // Afficher les tâches existantes au chargement
+
+    document.getElementById("valid").onclick = addTask; // Ajouter un écouteur pour le bouton d'ajout
+    document.getElementById("closeModal").onclick = clearData; // Ajouter un écouteur pour le bouton Annuler
+});
