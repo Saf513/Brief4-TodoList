@@ -93,14 +93,24 @@
 //     document.getElementById("duration").value = '';
 //     document.getElementById("statut").value = '';
 // });
+
 // Déclarer les variables
 let title = document.getElementById('title');
 let description = document.getElementById('description');
 let duration = document.getElementById('duration');
 let statut = document.getElementById('statut');
 let importance = document.getElementById('importance');
+let dateActuelle = new Date();
+let mood = "create";
+let dataTache;
 
-let dataTache = JSON.parse(localStorage.getItem('Task')) || []; // Charger les tâches ou initialiser un tableau vide
+// verification de localstorage
+if (localStorage.Task != null) {
+    dataTache = JSON.parse(localStorage.Task);
+}
+else {
+    dataTache = [];
+}
 
 // Fonction pour afficher les données
 function affichData() {
@@ -120,17 +130,14 @@ function affichData() {
         `;
     }
     document.getElementById('tbody').innerHTML = table; 
-    
 }
 
+// Fonction pour supprimer toutes les tâches
 function deleteAllTasks() {
-    if (confirm("Êtes-vous sûr de vouloir supprimer toutes les tâches ?")) {
-        dataTache = []; // Réinitialiser le tableau des tâches
-        localStorage.removeItem('Task'); // Supprimer de localStorage
-        affichData(); // Mettre à jour l'affichage
+        dataTache = []; 
+        localStorage.removeItem('Task'); 
+        affichData(); 
     }
-}
-
 
 // Fonction pour vider les champs de saisie
 function clearData() {
@@ -138,10 +145,12 @@ function clearData() {
     description.value = '';
     duration.value = '';
     statut.value = '';
-    importance.value = 'faible'; // Réinitialiser à la valeur par défaut
+    importance.value = ''; 
+    mood = "create"; 
+    document.getElementById("valid").innerHTML = "Ajouter"; 
 }
 
-// Fonction pour ajouter une tâche
+// Fonction pour ajouter 
 function addTask() {
     let tache = {
         title: title.value,
@@ -152,10 +161,28 @@ function addTask() {
         dateActuelle: new Date()
     };
 
-    dataTache.push(tache);
-    localStorage.setItem('Task', JSON.stringify(dataTache)); // Sauvegarder dans localStorage
-    affichData(); // Mettre à jour l'affichage
-    clearData(); // Vider les champs de saisie
+    if (mood === "create") {
+        dataTache.push(tache);
+    } else {
+        const index = dataTache.findIndex(t => t.title === title.value && t.description === description.value);
+        dataTache[index] = tache;
+        mood = "create"; 
+    }
+
+    localStorage.setItem('Task', JSON.stringify(dataTache)); 
+    affichData(); 
+    clearData(); 
+}
+
+// Fonction qui édite une tâche
+function editTask(i) {
+    mood = "edit"; // Changer le mode à "edit"
+    title.value = dataTache[i].title;
+    description.value = dataTache[i].description;
+    duration.value = dataTache[i].duration;
+    statut.value = dataTache[i].statut;
+    importance.value = dataTache[i].importance;
+    document.getElementById("valid").innerHTML = "Modifier"; // Changer le texte du bouton
 }
 
 // Fonction pour supprimer une tâche
@@ -173,4 +200,70 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("closeModal").onclick = clearData; // Ajouter un écouteur pour le bouton Annuler
 });
 
-document.getElementById("deleteAll").onclick=deleteAllTasks;
+document.getElementById("deleteAll").onclick = deleteAllTasks;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const addUniqueButton = document.getElementById('add-unique');
+    const modal = document.getElementById('modal-unique');
+    const closeModalButton = document.getElementById('closeModal');
+
+    modal.classList.add('hidden');
+
+
+    addUniqueButton.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+    });
+
+    closeModalButton.addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+});
+
+document.getElementById("valid").addEventListener('click', function () {
+    
+        // Créer un élément HTML pour afficher la tâche
+        const taskElement = document.createElement("div");
+        taskElement.style.background="#f0f0f0"
+        // taskElement.className = "task"; 
+        taskElement.innerHTML = `
+            <h4>${tache.titre}</h4>
+            <p>${tache.description}</p>
+            <p>Date : ${tache.duration}</p>
+            <p>Ajouté le : ${tache.dateActuelle.toLocaleDateString()}</p>
+        `;
+    
+        // Ajouter la tâche à la bonne section selon le statut
+        if (statut.value === "todo") {
+            document.getElementById("todo-list").appendChild(taskElement);
+        } else if (statut.value === "doing") {
+            document.getElementById("doing-list").appendChild(taskElement);
+        } else if (statut.value === "done") {
+            document.getElementById("done-list").appendChild(taskElement);
+        }
+        document.getElementById("modal-unique").classList.add("hidden");
+    });
+
+//     function todoType(){ 
+       
+//   const taskElement=document.createElement("div");
+//   taskElement.innerHTML = `
+//   <h4>${tache.title}</h4>
+//   <p>${tache.description}</p>
+//   <p>Date : ${tache.duration}</p>
+//   <p>Ajouté le : ${tache.dateActuelle}</p>
+//   <p>Ajouté le : ${tache.statut}</p>
+// `;
+// console.log ( tache)
+// if (tache.statut === "todo") {
+//                 document.getElementById("todo-list").appendChild(taskElement);
+//             } else if (tache.statut=== "doing") {
+//                 document.getElementById("doing-list").appendChild(taskElement);
+//             } else if (tache.statut=== "done") {
+//                 document.getElementById("done-list").appendChild(taskElement);
+//             }
+//             document.getElementById("modal-unique").classList.add("hidden");
+        
+//     }
+//      document.getElementById("valid").addEventListener('click', todoType);
+    
+    

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>To-Do-List</title>
     <link rel="stylesheet" href="/src/output.css">
-    <script src="app.js" defer></script>
+    <script src="app1.js" defer></script>
 </head>
 
 <body class=" p-0 m-0 w-full h-full"
@@ -63,7 +63,8 @@
             <div class="mb-5">
                 <label class="mb-2 text-white" for="importance">Degré d'importance</label> <br>
 
-                <select id="importance" class="border rounded  w-52 text-black text-center" required>
+                <select id="importance" class="border rounded  w-52 text-gray-100 text-center" required>
+                    <option selected>Select priorite</option>
                     <option value="faible"> p3 </option>
                     <option value="moyen"> p2 </option>
                     <option value="eleve"> p1 </option>
@@ -81,9 +82,9 @@
             <br>
             <!-- botton -->
             <div>
-                <button type="button" id="closeModal" aria-label="annuler"
+                <button type="button" id="closeModal" 
                     class="px-10 py-2 border-white border-solid border-2 rounded-lg text-white">Annuler</button>
-                <button type="button" id="valid" aria-label="ajouter"
+                <button type="button" id="valid"  
                     class="px-10 py-2 ml-10  text-white   border-white border-solid border-2 rounded-lg">Ajouter</button>
             </div>
         </form>
@@ -118,7 +119,7 @@
     </div>
 
     <!-- afficher tous les elements dans un tableau -->
-     <div>
+     <div class="">
         <table class="w-auto h-auto bg-red-300">
            <tr>
             <th>Titre</th>
@@ -138,6 +139,7 @@
         </div>
      </div>
 
+     <!-- Ajouter des multiples task -->
 
     
 </body>
