@@ -4,7 +4,11 @@ module.exports = {
     "./dist/*.{html, js}",
   ],
   theme: {
-    extend: {  backgroundImage: {
+    extend: {
+      spacing: {
+        '84': '21rem',
+      } , 
+      backgroundImage: {
       'modal-bg': "url('media\backg.jpg')",
     }},
   },

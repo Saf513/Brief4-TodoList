@@ -243,27 +243,5 @@ document.getElementById("valid").addEventListener('click', function () {
         document.getElementById("modal-unique").classList.add("hidden");
     });
 
-//     function todoType(){ 
-       
-//   const taskElement=document.createElement("div");
-//   taskElement.innerHTML = `
-//   <h4>${tache.title}</h4>
-//   <p>${tache.description}</p>
-//   <p>Date : ${tache.duration}</p>
-//   <p>Ajouté le : ${tache.dateActuelle}</p>
-//   <p>Ajouté le : ${tache.statut}</p>
-// `;
-// console.log ( tache)
-// if (tache.statut === "todo") {
-//                 document.getElementById("todo-list").appendChild(taskElement);
-//             } else if (tache.statut=== "doing") {
-//                 document.getElementById("doing-list").appendChild(taskElement);
-//             } else if (tache.statut=== "done") {
-//                 document.getElementById("done-list").appendChild(taskElement);
-//             }
-//             document.getElementById("modal-unique").classList.add("hidden");
-        
-//     }
-//      document.getElementById("valid").addEventListener('click', todoType);
-    
+
     

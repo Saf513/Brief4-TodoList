@@ -1,0 +1,20 @@
+#editBtn {
+    background-color: greenyellow;
+    border-radius: 6px;
+    color: black;
+    font-weight: bold;
+}
+
+#detailBtn {
+    background-color: aqua;
+    border-radius: 6px;
+    color: black;
+    font-weight: bold;
+}
+
+#supprimerBtn {
+    background-color: red;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+}

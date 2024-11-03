@@ -1,6 +1,8 @@
 // Déclarer les variables
 let dateActuelle = new Date();
 let mood = "create";
+
+//validation de storage
 let dataTache;
 if (localStorage.TaskData != null) {
     dataTache = JSON.parse(localStorage.TaskData);
@@ -15,26 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('modal-unique');
     const closeModalButton = document.getElementById('closeModal');
     const addBtn = document.getElementById('valid');
-    const searchBtn = document.getElementById('search');
     const closeDetailsButton = document.getElementById('closeDetails');
     const modalDetails = document.getElementById('modal-details');
-    const closeEditModalButton = document.getElementById('closeEditModal');
-    const saveStatusButton = document.getElementById('save-status');
 
-        saveStatusButton.addEventListener('click', () => {
-            const newStatus = document.getElementById('new-status').value.trim();
-            if (newStatus) {
-                updateTaskStatus(currentTask, newStatus);
-                document.getElementById('modal-edit-status').classList.add('hidden');
-            } else {
-                alert('Veuillez entrer un statut valide.');
-            }
-        });
-
-
-    closeEditModalButton.addEventListener('click', () => {
-        document.getElementById('modal-edit-status').classList.add('hidden');
-    });
     closeDetailsButton.addEventListener('click', () => {
         modalDetails.classList.add('hidden');
     });
@@ -57,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
 });
+
 
 function addToStatut() {
     const title = document.getElementById('title').value.trim();
@@ -107,18 +93,18 @@ function addToStatut() {
         containerToDo.innerHTML = `
         <div class="space-x-2 py-3 bg-white w-80 border-2 border-green-500 border-solid border-l-8">
      <h4 class="text-xl font pl-4 ">${tache.title}</h4>
-     <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm " >editer</button>
-     <button class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
-     <button class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
+     <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" onclick="editerTache(this)" >editer</button>
+     <button id="detailBtn" class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	"  >Détails</button>
+     <button id="supprimerBtn" class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
      </div>
      `;
     } else if (tache.importance === "moyen") {
         containerToDo.innerHTML = `
         <div class="space-x-2 py-3 bg-white w-80 border-2 border-orange-500  border-solid border-l-8">
      <h4 class="text-xl font pl-4 ">${tache.title}</h4>
-     <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" >editer</button>
-     <button class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
-     <button class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
+     <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" onclick="editerTache(this)">editer</button>
+     <button id="detailBtn" class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
+     <button id="supprimerBtn" class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
      </div>
      `;
     }
@@ -126,9 +112,9 @@ function addToStatut() {
         containerToDo.innerHTML = `
        <div class="space-x-2 py-3 bg-white w-80 border-2 border-red-500 border-l-8">
     <h4 class="text-xl font pl-4 ">${tache.title}</h4>
-    <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm"  >editer</button>
-    <button class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
-    <button class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
+    <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm"  onclick="editerTache(this)">editer</button>
+    <button id="detailBtn" class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
+    <button id="supprimerBtn" class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	"onclick="deleteTask(this)">Supprimer</button>
     </div>
      `;
     }
@@ -164,30 +150,30 @@ function loading() {
 
         if (tache.importance === "eleve") {
             containerToDo.innerHTML = `
-            <div class="space-x-2  bg-white w-80 border-2 border-green-500 border-solid border-l-8 my-4 py-4">
+            <div class="space-x-2  bg-white w-80 border-2 border-green-500 border-solid border-l-8 my-4 py-4 ml-4">
          <h4 class="text-xl font pl-4 ">${tache.title}</h4>
-         <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" >editer</button>
-         <button class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
-         <button class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
+         <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" onclick="editerTache(this)">editer</button>
+         <button id="detailBtn" class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
+         <button id="supprimerBtn" class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
          </div>
          `;
         } else if (tache.importance === "moyen") {
             containerToDo.innerHTML = `
-            <div class="space-x-2  bg-white w-80 border-2  border-orange-500  border-solid border-l-8 my-4 py-4">
+            <div class="space-x-2  bg-white w-80 border-2  border-orange-500  border-solid border-l-8 my-4 py-4 ">
          <h4 class="text-xl font pl-4 ">${tache.title}</h4>
-         <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" >editer</button>
-         <button class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
-         <button class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
+         <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" onclick="editerTache(this)">editer</button>
+         <button id="detailBtn" class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
+         <button id="supprimerBtn" class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
          </div>
          `;
         }
         else if (tache.importance === 'faible') {
             containerToDo.innerHTML = `
-          <div class="space-x-2  bg-white w-80 border-2 border-red-500 border-l-8 my-4 py-4">
+          <div class="space-x-2  bg-white w- border-2 border-red-500 border-l-8 my-4 py-4 ">
     <h4 class="text-xl font pl-4 ">${tache.title}</h4>
-    <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm"  >editer</button>
-    <button class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
-    <button class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
+    <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" onclick="editerTache(this)" >editer</button>
+    <button id="detailBtn" class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm" onclick="affichDetails(this)" >Détails</button>
+    <button id="supprimerBtn" class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
     </div>
          `;
         }
@@ -211,8 +197,7 @@ function deleteTask(task) {
     let titre = element.querySelector('h4').textContent;
 
     if (element) {
-        element.parentElement.remove();
-        updateCounters();
+        deleteAnimation(element.parentElement);
         dataTache.forEach(obj => {
             if (obj.title !== titre) {
                 temp.push(obj);
@@ -223,6 +208,25 @@ function deleteTask(task) {
         localStorage.setItem('TaskData', JSON.stringify(dataTache));
     }
 }
+
+function deleteAnimation(task) {
+    let opacity = 1;
+    function decrease() {
+        opacity -= 0.02;
+        if(opacity <= 0) {
+            task.style.opacity = 0;
+            task.remove();
+            updateCounters();
+        } else {
+            task.style.opacity = opacity;
+            requestAnimationFrame(decrease);
+        }
+    }
+
+    decrease();
+}
+ 
+
 function affichDetails(task) {
     const element = task.parentElement;
     const titre = element.querySelector('h4').textContent;
@@ -244,28 +248,27 @@ function affichDetails(task) {
         `;
 
         const modalDetails = document.getElementById('modal-details');
-        modalDetails.classList.remove('hidden'); // Afficher le modal
+        modalDetails.classList.remove('hidden'); 
     }
     updateCounters();
 }
 function updateCounters() {
-    // Récupérer les blocs de tâches
+    
     let todoBlock = document.getElementById('todo-list');
     let doingBlock = document.getElementById('doing-list');
     let doneBlock = document.getElementById('done-list');
 
-    // Compter les éléments de chaque bloc
+
     let counterTodo = todoBlock.children.length;
     let counterDoing = doingBlock.children.length;
     let counterDone = doneBlock.children.length;
 
-    // Mettre à jour les compteurs dans le DOM
+
     document.getElementById('todo-count').textContent = counterTodo;
     document.getElementById('doing-count').textContent = counterDoing;
     document.getElementById('done-count').textContent = counterDone;
 }
 
-let currentTask; // Variable pour stocker la tâche en cours d'édition
 
 document.addEventListener('DOMContentLoaded', () => {
     const closeEditModalButton = document.getElementById('closeEditModal');
@@ -286,62 +289,60 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function openEditModal(task) {
-    currentTask = task; // Stocker la tâche en cours d'édition
-    const modal = document.getElementById('modal-edit-status');
-    modal.classList.remove('hidden'); // Afficher le modal
-    document.getElementById('new-status').value = ''; // Réinitialiser le champ de saisie
-}
+function editerTache(task) {
+    let element = task.parentElement;
+    let titre = element.querySelector('h4').textContent;
 
-function updateTaskStatus(task, newStatus) {
-    const element = task.parentElement;
-    const title = element.querySelector('h4').textContent;
-
-    // Rechercher la tâche correspondante dans dataTache
-    const tache = dataTache.find(obj => obj.title === title);
-    if (tache) {
-        const validStatuses = ['todo', 'doing', 'done'];
-        if (validStatuses.includes(newStatus)) {
-            // Mise à jour du statut
-            tache.statut = newStatus;
-            element.parentElement.remove(); // Supprimer l'élément actuel de l'affichage
-
-            // Créer un nouveau conteneur pour le nouvel affichage
-            const newContainer = document.createElement("div");
-            newContainer.classList.add('bg-white', 'mt-2');
-
-            let borderColor;
-            if (tache.importance === "eleve") {
-                borderColor = "green-500";
-            } else if (tache.importance === "moyen") {
-                borderColor = "orange-500";
-            } else {
-                borderColor = "red-500";
-            }
-
-            newContainer.innerHTML = `
-                <div class="space-x-2 py-3 bg-white w-80 border-2 border-${borderColor} border-solid border-l-8">
-                    <h4 class="text-xl font pl-4 ">${tache.title}</h4>
-                    <button class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" onclick="openEditModal(this)">Editer</button>
-                    <button class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm" onclick="affichDetails(this)">Détails</button>
-                    <button class="deletUnique bg-red-400 rounded-md px-4 py-1 font-bold text-sm" onclick="deleteTask(this)">Supprimer</button>
-                </div>
-            `;
-
-            // Ajouter le nouveau conteneur au bon statut
-            if (tache.statut === "todo") {
-                document.getElementById("todo-list").appendChild(newContainer);
-            } else if (tache.statut === "doing") {
-                document.getElementById("doing-list").appendChild(newContainer);
-            } else if (tache.statut === "done") {
-                document.getElementById("done-list").appendChild(newContainer);
-            }
-
-            // Mettre à jour les données dans localStorage
-            localStorage.setItem('TaskData', JSON.stringify(dataTache));
-            updateCounters(); // Mettre à jour les compteurs
-        } else {
-            alert('Statut invalide. Veuillez utiliser "todo", "doing" ou "done".');
-        }
+    // Vérifier si le menu déroulant existe déjà
+    if (!element.querySelector('#status')) {
+        element.innerHTML += `
+        <select id="status" class="w-full">
+            <option selected>choisir status</option>
+            <option value="1">Todo</option>
+            <option value="2">Doing</option>
+            <option value="3">Done</option>
+        </select>`;
     }
+
+    let selectElement = document.getElementById('status');
+    selectElement.addEventListener('change', function() {
+        let newStatus = selectElement.value;
+        let taskElement = element.parentElement;
+        let taskTitle = taskElement.querySelector('h4').innerText;
+
+        // Mettre à jour le statut de la tâche dans le DOM
+        switch (newStatus) {
+            case '1':
+                document.getElementById('todo-list').appendChild(taskElement);
+                break;
+            case '2':
+                document.getElementById('doing-list').appendChild(taskElement);
+                break;
+            case '3':
+                document.getElementById('done-list').appendChild(taskElement);
+                break;
+        }
+
+        // Mettre à jour les données dans localStorage
+        dataTache.forEach(obj => {
+            if (obj.title === taskTitle) {
+                switch (newStatus) {
+                    case '1':
+                        obj.statut = 'todo';
+                        break;
+                    case '2':
+                        obj.statut = 'doing';
+                        break;
+                    case '3':
+                        obj.statut = 'done';
+                        break;
+                }
+            }
+        });
+
+        localStorage.setItem('TaskData', JSON.stringify(dataTache));
+
+        updateCounters();
+        selectElement.remove();
+    });
 }
