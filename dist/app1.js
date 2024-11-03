@@ -8,13 +8,20 @@ if (localStorage.TaskData != null) {
 else {
     dataTache = [];
 }
+
 //ajourt event listenner
 document.addEventListener('DOMContentLoaded', () => {
     const addUniqueButton = document.getElementById('add-unique');
     const modal = document.getElementById('modal-unique');
     const closeModalButton = document.getElementById('closeModal');
     const addBtn = document.getElementById('valid');
-    const searchBtn=document.getElementById('search')
+    const searchBtn = document.getElementById('search');
+    const closeDetailsButton = document.getElementById('closeDetails');
+    const modalDetails = document.getElementById('modal-details');
+
+    closeDetailsButton.addEventListener('click', () => {
+        modalDetails.classList.add('hidden');
+    });
     loading();
     modal.classList.add('hidden');
 
@@ -32,13 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
         clearData();
     })
 
-    searchBtn.addEventListener('click',()=>
-    {
-      searchOperation();   
-    })
 });
 
 function addToStatut() {
+
     // Créer l'objet tache
     const tache = {
         title: document.getElementById('title').value,
@@ -48,16 +52,26 @@ function addToStatut() {
         importance: document.getElementById('importance').value,
         dateActuelle: dateActuelle
     };
-
     const containerToDo = document.createElement("div");
+    containerToDo.classList.add( 'bg-white', 'rounded-sm','mt-2','w-80');
     containerToDo.innerHTML = `
-        <h4>${tache.title}</h4>
-        <button id="editBtn">editer</button>
-        <button id="deletUnique" onclick="deleteTask(this)" >supprimer</button>
-        <button id="infos">detail</button>
-
+        <div class="space-x-4 py-3 pl-4">
+          <h4 class="text-xl font pl-4 ">${tache.title}</h4>
+            <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" >editer</button>
+        <button class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
+        <button class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
+        </div></button>
     `;
 
+    if (tache.importance === "eleve") {
+        containerToDo.classList.add('border-2', 'border-l-4', 'border-red-400');
+    } else if (tache.importance === "moyen") {
+        containerToDo.classList.add('border-blue','bg-blue' ,'border-4', 'text-black', 'px-4', 'py-2', 'rounded');
+    }
+    else if (tache.importance === "faible") {
+        containerToDo.classList.add('text-black', 'px-4', 'py-2', 'rounded');
+
+    }
     if (tache.statut === "todo") {
         document.getElementById("todo-list").appendChild(containerToDo);
     } else if (tache.statut === "doing") {
@@ -85,12 +99,25 @@ function clearData() {
 function loading() {
     dataTache.forEach(tache => {
         const containerToDo = document.createElement("div");
-        containerToDo.innerHTML = `
-                <h4>${tache.title}</h4>
-                <button class="editBtn">Éditer</button>
-                <button class="deletUnique" onclick="deleteTask(this)">Supprimer</button>
-                <button class="infos">Détails</button>
-            `;
+        containerToDo.classList.add( 'bg-white', 'rounded-sm','mt-2');
+    containerToDo.innerHTML = `
+        <div class="space-x-4 py-3 pl-4">
+        <h4 class="text-xl font pl-4 ">${tache.title}</h4>
+
+            <button id="editBtn" class="bg-sky-200 rounded-md px-4 py-1 font-bold text-sm" >editer</button>
+        <button class="infos bg-sky-100 rounded-md px-4 py-1 font-bold text-sm	" onclick="affichDetails(this)" >Détails</button>
+        <button class="deletUnique  bg-red-400 rounded-md px-4 py-1 font-bold text-sm	" onclick="deleteTask(this)">Supprimer</button>
+        </div>
+    `;
+
+        if (tache.importance === "eleve") {
+            containerToDo.classList.add('border-2', 'border-l-4', 'border-red-400');
+        } else if (tache.importance === "moyen") {
+            containerToDo.classList.add('border-green', 'text-red', 'px-4', 'py-2', 'rounded');
+        }
+        else if (tache.importance === 'faible') {
+            containerToDo.classList.add('bg-green', 'text-black', 'px-4', 'py-2', 'rounded');
+        }
 
         // Ajouter la tâche au bon statut
         if (tache.statut === "todo") {
@@ -109,7 +136,7 @@ function deleteTask(task) {
     let titre = element.querySelector('h4').textContent;
 
     if (element) {
-        element.remove();
+        element.parentElement.remove();
         dataTache.forEach(obj => {
             if (obj.title !== titre) {
                 temp.push(obj);
@@ -119,8 +146,24 @@ function deleteTask(task) {
         localStorage.setItem('TaskData', JSON.stringify(dataTache));
     }
 }
+function affichDetails(task) {
+    const element = task.parentElement;
+    const titre = element.querySelector('h4').textContent;
+    console.log(titre);
 
-function searchOperation()
-{
-    
+    // Rechercher la tâche correspondante dans dataTache
+    const tache = dataTache.find(obj => obj.title === titre);
+    if (tache) {
+        const detailsContainer = document.getElementById('details');
+        detailsContainer.innerHTML = `
+            <h4>${tache.title}</h4>
+            <p>Date de création : ${tache.dateActuelle}</p>
+            <p>Date d'échéance : ${tache.duration}</p>
+            <p>Description : ${tache.description}</p>
+            <p>Importance : ${tache.importance}</p>
+        `;
+
+        const modalDetails = document.getElementById('modal-details');
+        modalDetails.classList.remove('hidden'); // Afficher le modal
+    }
 }
