@@ -17,7 +17,8 @@
     <!-- L'en-tête -->
     <header>
         <div class="flex justify-around my-10">
-            <div class="  bg-blue-500  rounded-lg   py-2 text-white font-bold hover:bg-blue-200 ease-in duration-300 " id="add-task">
+            <div class="  bg-blue-500  rounded-lg   py-2 text-white font-bold hover:bg-blue-200 ease-in duration-300 "
+                id="add-task">
                 <button id="add-unique" class="text-center w-44">Add Task +</button>
             </div>
 
@@ -37,29 +38,30 @@
 
     <!-- Modal d'ajoute unique-->
     <div id="modal-unique"
-        class="hidden  from-blue-500 to-transparent   justify-center mx-72 rounded-lg text-center  flex-col pb-5 mb-10">
+        class="hidden  from-blue-500 to-transparent   justify-center mx-72 rounded-lg text-center  flex-col pb-5 mb-10 sm:flex-wrap">
 
 
         <h2 class="text-xl mb-4 mt-4 text-white font-bold text-center">Ajouter une Tâche</h2>
         <br>
         <form id="taskForm" class=" flex justify-center flex-col items-center">
-<!-- titre -->
+            <!-- titre -->
             <div class="mb-5 ">
                 <label class=" mb-2 text-white" for="title">Titre :</label> <br>
-                <input type="text" id="title" name="title"    class="border rounded   text-black w-52" required>
+                <input type="text" id="title" name="title" class="border rounded   text-black w-52" required>
             </div>
-<!-- descreption -->
+            <!-- descreption -->
             <div class="mb-5">
                 <label class="mb-2 text-white" for="description">Description :</label> <br>
-                <textarea id="description" class=" rounded  text-black resize-none w-52" name="descreption" required></textarea>
+                <textarea id="description" class=" rounded  text-black resize-none w-52" name="descreption"
+                    required></textarea>
             </div>
-<!-- date d'aherance -->
+            <!-- date d'aherance -->
             <div class="mb-5">
                 <label class=" mb-2 text-white" for="duration">Date D'aherance:</label> <br>
                 <input type="date" id="duration" class="border rounded   text-black w-52 placeholder:text-center "
                     placeholder="day / month / year" required>
             </div>
-<!-- degre d'importance -->
+            <!-- degre d'importance -->
             <div class="mb-5">
                 <label class="mb-2 text-white" for="importance">Degré d'importance</label> <br>
 
@@ -70,7 +72,7 @@
                     <option value="eleve"> p1 </option>
                 </select>
             </div>
-<!-- status -->
+            <!-- status -->
             <div class="mb-5">
                 <label class="mb-2 text-white" for="statut">Status :</label> <br>
                 <select id="statut" class="border rounded  w-52 text-center " required>
@@ -82,9 +84,9 @@
             <br>
             <!-- botton -->
             <div>
-                <button type="button" id="closeModal" 
+                <button type="button" id="closeModal"
                     class="px-10 py-2 border-white border-solid border-2 rounded-lg text-white">Annuler</button>
-                <button type="button" id="valid"  
+                <button type="button" id="valid"
                     class="px-10 py-2 ml-10  text-white   border-white border-solid border-2 rounded-lg">Ajouter</button>
             </div>
         </form>
@@ -93,46 +95,53 @@
     </div>
     <!-- les sections d'affichage -->
 
-    <div id="affich-list" class="flex justify-around mt-10">
+    <div id="affich-list" class="flex justify-around mt-10 ">
 
         <!-- barre todo -->
-       <div>
         <div class="w-80">
-            <h3 class="font-bold text-xl pl-10 pt-2 pb-2 w-80 bg-amber-100 rounded-lg">To Do</h3>
-        </div>
-        <div id="todo-list" class="bg-amber-50 h-96 text-black overflow-auto ">
-        </div>
-
-       </div>
-        <!-- barre doing -->
-        <div id="doing-list" class="bg-red-50 w-90 h-96 text-black overflow-auto">
-            <div>
-                <h3 class="font-bold text-xl pl-10 pt-2 pb-2 bg-amber-50  ">Doing</h3>
+            <div class="font-bold text-xl pl-10 py-2 bg-amber-100  space-x-4">
+                <span>To Do</span>
+                <span id="todo-count">0</span>
             </div>
-            <div id="modal-details" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 overflow-auto">
-                <div class="flex items-center justify-center h-full">
-                    <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
-                        <span id="closeDetails" class=" top-2 right-2 cursor-pointer text-black hover:text-black">&times;</span>
-                        <div id="details"></div>
-                    </div>
+            <div id="todo-list" class="bg-amber-50 h-96 text-black overflow-auto ">
+            </div>
+
+        </div>
+        <!-- barre doing -->
+
+       <div class="bg-red-50 text-black overflow-auto w-80">
+        <div class="font-bold text-xl pl-10 py-2 bg-amber-50 space-x-4 ">
+            <span>Doing</span>
+            <span id="doing-count">0</span>
+        </div>
+        <div id="doing-list">
+        
+        </div>
+        <div id="modal-details" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 overflow-auto">
+            <div class="flex items-center justify-center h-full">
+                <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
+                    <span id="closeDetails"
+                        class=" top-2 right-2 cursor-pointer text-black hover:text-black">&times;</span>
+                    <div id="details"></div>
                 </div>
             </div>
         </div>
-
+       </div>
         <!-- barre done -->
-         
-        <div >
-            <div>
-                <h3 class="font-bold text-xl pl-10 pt-2 pb-2 bg-red-50   ">DONE</h3>
+
+        <div class="  bg-amber-100  w-80 text-black overflow-auto">
+            <div class="font-bold text-xl pl-10 pt-2 pb-2 bg-red-50  ">
+                <span >DONE</span>
+                <span id="done-count">0</span>
             </div>
 
-            <div id="done-list" class="  bg-amber-100  w-90 h-96 text-black overflow-auto"></div>
+            <div id="done-list" class="  bg-amber-100    text-black overflow-auto"></div>
         </div>
 
     </div>
 
     <!-- afficher tous les elements dans un tableau -->
-     <!-- <div class="">
+    <!-- <div class="">
         <table class="w-auto h-auto bg-red-300">
            <tr>
             <th>Titre</th>
@@ -152,7 +161,7 @@
         </div>
      </div> -->
 
-     <!-- <div id="modal-details" class="fixed inset-0 z-50  bg-black bg-opacity-50">
+    <!-- <div id="modal-details" class="fixed inset-0 z-50  bg-black bg-opacity-50">
         <div class="flex items-center justify-center h-full">
             <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
                 <span id="closeDetails" class="absolute top-2 right-2 cursor-pointer text-gray-600 hover:text-gray-800">&times;</span>
@@ -160,7 +169,19 @@
             </div>
         </div>
     </div> -->
+    <div id="modal-edit-status" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 overflow-auto">
+        <div class="flex items-center justify-center h-full">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
+                <h3 class="text-lg font-bold">Modifier le Statut</h3>
+                <input type="text" id="new-status" placeholder="Nouveau statut" class="border p-2 w-full mt-2" />
+                <button id="save-status" class="bg-blue-500 text-white px-4 py-2 mt-4">Sauvegarder</button>
+                <button id="closeEditModal" class="bg-blue-500 text-white px-4 py-2 mt-4">Sauvegarder</button>
+
+            </div>
+        </div>
+    </div>
     
 </body>
 
 </html>
+         

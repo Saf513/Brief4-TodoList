@@ -125,7 +125,7 @@ function affichData() {
             <td>${dataTache[i].importance}</td>
             <td>${dataTache[i].statut}</td>
             <td><button class="edit" onclick="editTask(${i})">Modifier</button></td>
-            <td><button class="delete" onclick="deleteTask(this)">Supprimer</button></td>
+            <td><button class="delete" onclick="deleteTask(${i})">Supprimer</button></td>
          </tr>
         `;
     }
